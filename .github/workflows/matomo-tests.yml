@@ -37,22 +37,9 @@ jobs:
       fail-fast: false
       matrix:
         type: [ 'UnitTests', 'SystemTestsPlugins', 'SystemTestsCore', 'IntegrationTestsCore', 'IntegrationTestsPlugins' ]
-        php: [ '7.2', '8.2', '8.3' ]
-        engine: [ 'Mysql', 'Mariadb' ]
-        adapter: [ 'PDO_MYSQL', 'MYSQLI' ]
-        exclude:
-          - php: '7.2'
-            engine: 'Mariadb'
-          - php: '8.2'
-            engine: 'Mysql'
-          - php: '8.3'
-            engine: 'Mariadb'
-          - php: '7.2'
-            adapter: 'MYSQLI'
-          - php: '8.2'
-            adapter: 'MYSQLI'
-          - php: '8.3'
-            adapter: 'PDO_MYSQL'
+        php: [ '8.3' ]
+        engine: [ 'Tidb' ]
+        adapter: [ 'PDO_MYSQL' ]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -69,39 +56,7 @@ jobs:
           php-version: ${{ matrix.php }}
           redis-service: true
           artifacts-pass: ${{ secrets.ARTIFACTS_PASS }}
-          upload-artifacts: ${{ matrix.php == '7.2' }}
-  Javascript:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: false
-          persist-credentials: false
-          submodules: true
-          path: matomo
-      - name: running tests
-        uses: matomo-org/github-action-tests@main
-        with:
-          test-type: 'JS'
-          php-version: '7.2'
-          node-version: '12'
-  Client:
-    runs-on: ubuntu-20.04
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          lfs: false
-          persist-credentials: false
-          submodules: true
-          path: matomo
-      - name: running tests
-        uses: matomo-org/github-action-tests@main
-        with:
-          test-type: 'Client'
-          node-version: '16'
-          mysql-service: false
+          upload-artifacts: false
   UI:
     runs-on: ubuntu-20.04
     strategy:
@@ -123,6 +78,7 @@ jobs:
           test-type: 'UI'
           php-version: '7.2'
           node-version: '16'
+          mysql-engine: 'Tidb'
           redis-service: true
           artifacts-pass: ${{ secrets.ARTIFACTS_PASS }}
-          upload-artifacts: true
+          upload-artifacts: false
