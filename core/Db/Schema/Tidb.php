@@ -48,4 +48,9 @@ class Tidb extends Mysql
 
         return $options;
     }
+
+    protected function getDatabaseCreateOptions(): string
+    {
+        return 'DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci';
+    }
 }
