@@ -180,7 +180,7 @@ class UrlHelper
         }
 
         $uri = !empty($parsed['scheme']) ? $parsed['scheme'] . ':' . (!strcasecmp($parsed['scheme'], 'mailto') ? '' : '//') : '';
-        $uri .= !empty($parsed['user']) ? $parsed['user'] . (!empty($parsed['pass']) ? ':' . $parsed['pass'] : '') . '@' : '';
+        $uri .= !empty($parsed['user']) ? urlencode(urldecode($parsed['user'])) . (!empty($parsed['pass']) ? ':' . urlencode(urldecode($parsed['pass'])) : '') . '@' : '';
         $uri .= !empty($parsed['host']) ? $parsed['host'] : '';
         $uri .= !empty($parsed['port']) ? ':' . $parsed['port'] : '';
 
